@@ -1,11 +1,11 @@
 body {
   font-family: 'Montserrat', sans-serif;
   margin: 36px 156px;
+  display: flex;
+  justify-content: center;
 }
 
 .search-form {
-  display: flex;
-  justify-content: center;
 }
 
 input {
@@ -19,6 +19,8 @@ input {
   line-height: 1.5;
   letter-spacing: 0.04em;
   color: #808080;
+  padding: 8px 16px;
+  box-sizing: border-box;
 }
 
 input:hover {
@@ -41,6 +43,7 @@ button {
   line-height: 1.5;
   letter-spacing: 0.04em;
   color: #fff;
+  border: none;
 }
 
 button:hover {
@@ -48,4 +51,24 @@ button:hover {
 }
 
 .gallery {
+  list-style-type: none;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 24px 156px;
+  width: 1128px;
+}
+
+.gallery__item {
+  width: calc ((100% - 48px) / 3);
+}
+
+.gallery__image {
+  display: block;
+  border: 1px solid #808080;
+  width: 360px;
+  height: 200px;
 }
