@@ -1,65 +1,41 @@
+// main.js
 import { fetchImages } from './js/pixabay-api.js';
 import {
   renderGallery,
-  clearGallery,
-  showNotification,
   showLoader,
   hideLoader,
+  showNoResultsMessage,
 } from './js/render-functions.js';
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
 
 const form = document.querySelector('#search-form');
-let query = '';
+const gallery = document.querySelector('.gallery');
 let page = 1;
+const perPage = 12;
 
 form.addEventListener('submit', async event => {
   event.preventDefault();
-  query = event.currentTarget.elements.searchQuery.value.trim();
 
-  if (query === '') {
-    showNotification('Please enter a search query', 'warning');
+  const query = form.querySelector('input[name="searchQuery"]').value.trim();
+
+  if (!query) {
     return;
   }
 
-  clearGallery();
   page = 1;
-  await fetchAndRenderImages();
-});
+  gallery.innerHTML = '';
+  showLoader();
 
-async function fetchAndRenderImages() {
   try {
-    showLoader();
-    const data = await fetchImages(query, page);
-    renderGallery(data.hits);
+    const data = await fetchImages(query, page, perPage);
 
-    if (data.totalHits > 12) {
-      observeLoadMore();
+    if (data.hits.length === 0) {
+      showNoResultsMessage();
+    } else {
+      renderGallery(data.hits);
     }
-
-    new SimpleLightbox('.gallery a').refresh();
   } catch (error) {
-    showNotification(error.message, 'error');
+    console.error('Error:', error);
   } finally {
     hideLoader();
   }
-}
-
-function observeLoadMore() {
-  const options = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.5,
-  };
-
-  const observer = new IntersectionObserver(async entries => {
-    if (entries[0].isIntersecting) {
-      page += 1;
-      await fetchAndRenderImages();
-    }
-  }, options);
-
-  observer.observe(document.querySelector('.load-more'));
-}
+});

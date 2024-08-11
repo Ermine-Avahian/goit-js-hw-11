@@ -8,14 +8,12 @@ export async function fetchImages(query, page = 1, perPage = 12) {
 
   try {
     const response = await fetch(url);
-    const data = await response.json();
-
-    if (data.totalHits === 0) {
-      throw new Error('No images found');
+    if (!response.ok) {
+      throw new Error('Failed to fetch images');
     }
-
-    return data;
+    return await response.json();
   } catch (error) {
+    console.error('Error fetching images:', error);
     throw error;
   }
 }
