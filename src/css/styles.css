@@ -76,7 +76,7 @@ button:hover {
 
 .gallery_info {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   margin-top: 4px;
   margin-bottom: 4px;
 }
