@@ -108,17 +108,3 @@ p {
   letter-spacing: 0.04em;
   color: #2e2f42;
 }
-
-.error-message {
-  border-bottom: 2px solid #ffbebe;
-  border-radius: 4px;
-  padding: 20px;
-  width: 432px;
-  height: 88px;
-  background: #ef4040;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 1.5;
-  letter-spacing: 0.03em;
-  color: #fafafb;
-}

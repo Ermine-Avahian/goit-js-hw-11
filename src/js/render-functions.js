@@ -38,6 +38,18 @@ export function showNotification(message, type = 'info') {
     title: type.charAt(0).toUpperCase() + type.slice(1),
     message: message,
     position: 'topRight',
+    backgroundColor: '#ef4040',
+    titleColor: '#fafafb',
+    messageColor: '#fafafb',
+    borderBottom: '2px solid #ffbebe',
+    borderRadius: '4px',
+    padding: '20px',
+    width: '432px',
+    height: '88px',
+    fontSize: '16px',
+    fontWeight: '400',
+    lineHeight: '1.5',
+    letterSpacing: '0.03em',
   });
 }
 
