@@ -1,9 +1,8 @@
 import iziToast from 'izitoast';
 
-export function renderGallery(images) {
-  const gallery = document.querySelector('.gallery');
+export function renderGallery(images, galleryElement) {
   const markup = images.map(image => createCardMarkup(image)).join('');
-  gallery.insertAdjacentHTML('beforeend', markup);
+  galleryElement.insertAdjacentHTML('beforeend', markup);
 }
 
 function createCardMarkup({

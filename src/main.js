@@ -12,8 +12,14 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
 const form = document.querySelector('#search-form');
+const galleryElement = document.querySelector('.gallery');
+const loaderElement = document.querySelector('.loader');
+const loadMoreElement = document.querySelector('.load-more');
+
 let query = '';
 let page = 1;
+
+let lightbox = new SimpleLightbox('.gallery a');
 
 form.addEventListener('submit', async event => {
   event.preventDefault();
@@ -42,13 +48,12 @@ async function fetchAndRenderImages() {
       return;
     }
 
-    renderGallery(data.hits);
+    renderGallery(data.hits, galleryElement);
+    lightbox.refresh();
 
     if (data.totalHits > 12) {
       observeLoadMore();
     }
-
-    new SimpleLightbox('.gallery a').refresh();
   } catch (error) {
     showNotification(error.message, 'error');
   } finally {
@@ -70,5 +75,5 @@ function observeLoadMore() {
     }
   }, options);
 
-  observer.observe(document.querySelector('.load-more'));
+  observer.observe(loadMoreElement);
 }
