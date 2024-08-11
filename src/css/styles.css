@@ -72,14 +72,13 @@ button:hover {
   color: currentColor;
   text-decoration: none;
   border: 1px solid #808080;
+  box-sizing: border-box;
 }
 
 .gallery__image {
   display: block;
   width: 360px;
   height: 200px;
-  box-sizing: border-box;
-  object-fit: cover;
 }
 
 .gallery__info {
