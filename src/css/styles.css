@@ -69,15 +69,17 @@ button:hover {
 
 .gallery__item {
   width: calc((100% - 48px) / 3);
+  color: currentColor;
+  text-decoration: none;
+  border: 1px solid #808080;
 }
 
 .gallery__image {
   display: block;
-  border: 1px solid #808080;
   width: 360px;
   height: 200px;
   box-sizing: border-box;
-  object-fit: ;
+  object-fit: cover;
 }
 
 .gallery__info {
@@ -96,6 +98,7 @@ p {
   line-height: 2;
   letter-spacing: 0.04em;
   color: #2e2f42;
+  margin: 0;
 }
 
 .gallery_info p:first-child {
