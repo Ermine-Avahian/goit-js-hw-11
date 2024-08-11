@@ -1,3 +1,5 @@
+import iziToast from 'izitoast';
+
 export function renderGallery(images) {
   const gallery = document.querySelector('.gallery');
   const markup = images.map(image => createCardMarkup(image)).join('');
@@ -31,18 +33,10 @@ export function clearGallery() {
   gallery.innerHTML = '';
 }
 
-export function showErrorNotification() {
-  iziToast.error({
-    title: 'Error',
-    message:
-      'Sorry, there are no images matching your search query. Please, try again!',
-    position: 'topRight',
-  });
-}
-
 export function showNotification(message, type = 'info') {
   iziToast[type]({
-    title: message,
+    title: type.charAt(0).toUpperCase() + type.slice(1),
+    message: message,
     position: 'topRight',
   });
 }
