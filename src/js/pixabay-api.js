@@ -11,9 +11,13 @@ export async function fetchImages(query, page = 1, perPage = 12) {
     const data = await response.json();
 
     if (data.totalHits === 0) {
-      throw new Error(
-        'Sorry, there are no images matching your search query. Please, try again!'
-      );
+      const errorMessage = document.createElement('div');
+      errorMessage.className = 'error-message';
+      errorMessage.textContent =
+        'Sorry, there are no images matching your search query. Please, try again!';
+
+      document.body.appendChild(errorMessage);
+      throw new Error(errorMessage.textContent);
     }
 
     return data;
