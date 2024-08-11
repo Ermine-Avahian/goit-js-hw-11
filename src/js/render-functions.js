@@ -50,6 +50,10 @@ export function showNotification(message, type = 'info') {
     fontWeight: '400',
     lineHeight: '1.5',
     letterSpacing: '0.03em',
+    messageMaxWidth: '100%',
+    messageOverflow: 'hidden',
+    wordBreak: 'break-word',
+    wordWrap: 'break-word',
   });
 }
 
