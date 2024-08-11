@@ -72,3 +72,12 @@ function observeLoadMore() {
 
   observer.observe(document.querySelector('.load-more'));
 }
+
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
+
+iziToast.show({
+  title: 'Test Notification',
+  message: 'This is a test notification to ensure iziToast is working.',
+  position: 'topRight',
+});
