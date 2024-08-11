@@ -51,6 +51,11 @@ button:hover {
   background: #6c8cff;
 }
 
+.loader {
+  display: flex;
+  justify-content: center;
+}
+
 .gallery {
   list-style-type: none;
   margin-top: 0;
