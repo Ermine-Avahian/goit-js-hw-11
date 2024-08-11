@@ -11,7 +11,9 @@ export async function fetchImages(query, page = 1, perPage = 12) {
     const data = await response.json();
 
     if (data.totalHits === 0) {
-      throw new Error('No images found');
+      throw new Error(
+        'Sorry, there are no images matching your search query. Please, try again!'
+      );
     }
 
     return data;
