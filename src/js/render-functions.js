@@ -31,6 +31,15 @@ export function clearGallery() {
   gallery.innerHTML = '';
 }
 
+export function showErrorNotification() {
+  iziToast.error({
+    title: 'Error',
+    message:
+      'Sorry, there are no images matching your search query. Please, try again!',
+    position: 'topRight',
+  });
+}
+
 export function showNotification(message, type = 'info') {
   iziToast[type]({
     title: message,

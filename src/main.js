@@ -33,6 +33,15 @@ async function fetchAndRenderImages() {
   try {
     showLoader();
     const data = await fetchImages(query, page);
+
+    if (data.hits.length === 0) {
+      showNotification(
+        'Sorry, there are no images matching your search query. Please, try again!',
+        'error'
+      );
+      return;
+    }
+
     renderGallery(data.hits);
 
     if (data.totalHits > 12) {
