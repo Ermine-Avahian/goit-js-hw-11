@@ -15,9 +15,8 @@ try {
     throw new Error(
       'Sorry, there are no images matching your search query. Please, try again!'
     );
+    return data;
   }
-
-  return data;
 } catch (error) {
   throw error;
 }
