@@ -5,18 +5,19 @@ export async function fetchImages(query, page = 1, perPage = 12) {
   const url = `${BASE_URL}?key=${API_KEY}&q=${encodeURIComponent(
     query
   )}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`;
-}
 
-try {
-  const response = await fetch(url);
-  const data = await response.json();
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
 
-  if (data.totalHits === 0) {
-    throw new Error(
-      'Sorry, there are no images matching your search query. Please, try again!'
-    );
+    if (data.totalHits === 0) {
+      throw new Error(
+        'Sorry, there are no images matching your search query. Please, try again!'
+      );
+    }
+
     return data;
+  } catch (error) {
+    throw error;
   }
-} catch (error) {
-  throw error;
 }
