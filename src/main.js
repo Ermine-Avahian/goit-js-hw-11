@@ -30,14 +30,14 @@ form.addEventListener('submit', async event => {
     return;
   }
 
-  clearGallery(galleryElement);
+  clearGallery();
   page = 1;
   await fetchAndRenderImages();
 });
 
 async function fetchAndRenderImages() {
   try {
-    showLoader(loaderElement);
+    showLoader();
     const data = await fetchImages(query, page);
 
     if (data.hits.length === 0) {
@@ -50,13 +50,14 @@ async function fetchAndRenderImages() {
 
     renderGallery(data.hits, galleryElement);
     lightbox.refresh();
+
     if (data.totalHits > 12) {
       observeLoadMore();
     }
   } catch (error) {
     showNotification(error.message, 'error');
   } finally {
-    hideLoader(loaderElement);
+    hideLoader();
   }
 }
 
