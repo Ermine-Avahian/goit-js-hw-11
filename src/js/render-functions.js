@@ -1,5 +1,3 @@
-import iziToast from 'izitoast';
-
 export function renderGallery(images, galleryElement) {
   const markup = images.map(image => createCardMarkup(image)).join('');
   galleryElement.insertAdjacentHTML('beforeend', markup);
@@ -27,9 +25,16 @@ function createCardMarkup({
   `;
 }
 
-export function clearGallery() {
-  const gallery = document.querySelector('.gallery');
-  gallery.innerHTML = '';
+export function clearGallery(galleryElement) {
+  galleryElement.innerHTML = '';
+}
+
+export function showLoader(loaderElement) {
+  loaderElement.classList.add('visible');
+}
+
+export function hideLoader(loaderElement) {
+  loaderElement.classList.remove('visible');
 }
 
 export function showNotification(message, type = 'info') {
@@ -54,14 +59,4 @@ export function showNotification(message, type = 'info') {
     wordBreak: 'break-word',
     wordWrap: 'break-word',
   });
-}
-
-export function showLoader() {
-  const loader = document.querySelector('.loader');
-  loader.classList.add('visible');
-}
-
-export function hideLoader() {
-  const loader = document.querySelector('.loader');
-  loader.classList.remove('visible');
 }

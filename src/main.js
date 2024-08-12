@@ -30,14 +30,14 @@ form.addEventListener('submit', async event => {
     return;
   }
 
-  clearGallery();
+  clearGallery(galleryElement);
   page = 1;
   await fetchAndRenderImages();
 });
 
 async function fetchAndRenderImages() {
   try {
-    showLoader();
+    showLoader(loaderElement);
     const data = await fetchImages(query, page);
 
     if (data.hits.length === 0) {
@@ -57,7 +57,7 @@ async function fetchAndRenderImages() {
   } catch (error) {
     showNotification(error.message, 'error');
   } finally {
-    hideLoader();
+    hideLoader(loaderElement);
   }
 }
 
