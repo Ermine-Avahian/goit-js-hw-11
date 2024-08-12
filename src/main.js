@@ -21,7 +21,7 @@ let page = 1;
 
 let lightbox = new SimpleLightbox('.gallery a');
 
-form.addEventListener('submit', async event => {
+form.addEventListener('submit', event => {
   event.preventDefault();
   query = event.currentTarget.elements.searchQuery.value.trim();
 
@@ -32,33 +32,35 @@ form.addEventListener('submit', async event => {
 
   clearGallery(galleryElement);
   page = 1;
-  await fetchAndRenderImages();
+  fetchAndRenderImages();
 });
 
-async function fetchAndRenderImages() {
-  try {
-    showLoader(loaderElement);
-    const data = await fetchImages(query, page);
+function fetchAndRenderImages() {
+  showLoader(loaderElement);
 
-    if (data.hits.length === 0) {
-      showNotification(
-        'Sorry, there are no images matching your search query. Please, try again!',
-        'error'
-      );
-      return;
-    }
+  fetchImages(query, page)
+    .then(data => {
+      if (data.hits.length === 0) {
+        showNotification(
+          'Sorry, there are no images matching your search query. Please, try again!',
+          'error'
+        );
+        return;
+      }
 
-    renderGallery(data.hits, galleryElement);
-    lightbox.refresh();
+      renderGallery(data.hits, galleryElement);
+      lightbox.refresh();
 
-    if (data.totalHits > 12) {
-      observeLoadMore();
-    }
-  } catch (error) {
-    showNotification(error.message, 'error');
-  } finally {
-    hideLoader(loaderElement);
-  }
+      if (data.totalHits > 12) {
+        observeLoadMore();
+      }
+    })
+    .catch(error => {
+      showNotification(error.message, 'error');
+    })
+    .finally(() => {
+      hideLoader(loaderElement);
+    });
 }
 
 function observeLoadMore() {
@@ -68,10 +70,10 @@ function observeLoadMore() {
     threshold: 0.5,
   };
 
-  const observer = new IntersectionObserver(async entries => {
+  const observer = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting) {
       page += 1;
-      await fetchAndRenderImages();
+      fetchAndRenderImages();
     }
   }, options);
 
