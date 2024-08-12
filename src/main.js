@@ -21,7 +21,7 @@ let page = 1;
 
 let lightbox = new SimpleLightbox('.gallery a');
 
-form.addEventListener('submit', event => {
+form.addEventListener('submit', async event => {
   event.preventDefault();
   query = event.currentTarget.elements.searchQuery.value.trim();
 
@@ -32,35 +32,32 @@ form.addEventListener('submit', event => {
 
   clearGallery(galleryElement);
   page = 1;
-  fetchAndRenderImages();
+  await fetchAndRenderImages();
 });
 
-function fetchAndRenderImages() {
-  showLoader(loaderElement);
+async function fetchAndRenderImages() {
+  try {
+    showLoader(loaderElement);
+    const data = await fetchImages(query, page);
 
-  fetchImages(query, page)
-    .then(data => {
-      if (data.hits.length === 0) {
-        showNotification(
-          'Sorry, there are no images matching your search query. Please, try again!',
-          'error'
-        );
-        return;
-      }
+    if (data.hits.length === 0) {
+      showNotification(
+        'Sorry, there are no images matching your search query. Please, try again!',
+        'error'
+      );
+      return;
+    }
 
-      renderGallery(data.hits, galleryElement);
-      lightbox.refresh();
-
-      if (data.totalHits > 12) {
-        observeLoadMore();
-      }
-    })
-    .catch(error => {
-      showNotification(error.message, 'error');
-    })
-    .finally(() => {
-      hideLoader(loaderElement);
-    });
+    renderGallery(data.hits, galleryElement);
+    lightbox.refresh();
+    if (data.totalHits > 12) {
+      observeLoadMore();
+    }
+  } catch (error) {
+    showNotification(error.message, 'error');
+  } finally {
+    hideLoader(loaderElement);
+  }
 }
 
 function observeLoadMore() {
@@ -70,10 +67,10 @@ function observeLoadMore() {
     threshold: 0.5,
   };
 
-  const observer = new IntersectionObserver(entries => {
+  const observer = new IntersectionObserver(async entries => {
     if (entries[0].isIntersecting) {
       page += 1;
-      fetchAndRenderImages();
+      await fetchAndRenderImages();
     }
   }, options);
 
