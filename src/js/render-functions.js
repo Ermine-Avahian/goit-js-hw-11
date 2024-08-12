@@ -1,80 +1,48 @@
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 
-export function renderGallery(images, galleryElement) {
-  const markup = images.map(image => createCardMarkup(image)).join('');
-  galleryElement.insertAdjacentHTML('beforeend', markup);
-}
+let lightbox;
 
-function createCardMarkup({
-  webformatURL,
-  largeImageURL,
-  tags,
-  likes,
-  views,
-  comments,
-  downloads,
-}) {
-  return `
-    <a href="${largeImageURL}" class="gallery__item">
-      <img
-        src="${webformatURL}"
-        alt="${tags}"
-        loading="lazy"
-        class="gallery__image"
-      />
-      <div class="gallery__info">
-        <p>
-          <b>Likes:</b> ${likes}
-        </p>
-        <p>
-          <b>Views:</b> ${views}
-        </p>
-        <p>
-          <b>Comments:</b> ${comments}
-        </p>
-        <p>
-          <b>Downloads:</b> ${downloads}
-        </p>
-      </div>
-    </a>
-  `;
-}
-
-export function clearGallery() {
-  const gallery = document.querySelector('.gallery');
+export function renderImages(images, gallery) {
   gallery.innerHTML = '';
-}
 
-export function showNotification(message, type = 'info') {
-  iziToast[type]({
-    title: type.charAt(0).toUpperCase() + type.slice(1),
-    message: message,
-    position: 'topRight',
-    backgroundColor: '#ef4040',
-    titleColor: '#fafafb',
-    messageColor: '#fafafb',
-    borderBottom: '2px solid #ffbebe',
-    borderRadius: '4px',
-    padding: '20px',
-    width: '432px',
-    height: '88px',
-    fontSize: '16px',
-    fontWeight: '400',
-    lineHeight: '1.5',
-    letterSpacing: '0.03em',
-    messageMaxWidth: '100%',
-    messageOverflow: 'hidden',
-    wordBreak: 'break-word',
-    wordWrap: 'break-word',
-  });
-}
+  if (images.length === 0) {
+    iziToast.error({
+      title: 'Error',
+      message:
+        'Sorry, there are no images matching your search query. Please try again!',
+    });
+    return;
+  }
 
-export function showLoader() {
-  const loader = document.querySelector('.loader');
-  loader.classList.add('visible');
-}
+  const markup = images
+    .map(image => {
+      return `
+      <li class="gallery__item">
+        <a href="${image.largeImageURL}" data-lightbox="gallery">
+          <img class="gallery__image" src="${image.webformatURL}" alt="${image.tags}" loading="lazy" />
+        </a>
+        <div class="gallery__info">
+          <p><b>Likes:</b> ${image.likes}</p>
+          <p><b>Views:</b> ${image.views}</p>
+          <p><b>Comments:</b> ${image.comments}</p>
+          <p><b>Downloads:</b> ${image.downloads}</p>
+        </div>
+      </li>
+    `;
+    })
+    .join('');
 
-export function hideLoader() {
-  const loader = document.querySelector('.loader');
-  loader.classList.remove('visible');
+  gallery.insertAdjacentHTML('beforeend', markup);
+
+  if (lightbox) {
+    lightbox.refresh();
+  } else {
+    lightbox = new SimpleLightbox('.gallery a', {
+      captionsData: 'alt',
+      captionDelay: 250,
+    });
+  }
 }

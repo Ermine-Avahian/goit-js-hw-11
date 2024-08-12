@@ -52,11 +52,6 @@ button:hover {
   background: #6c8cff;
 }
 
-.loader {
-  display: flex;
-  justify-content: center;
-}
-
 .gallery {
   list-style-type: none;
   margin-top: 0;
@@ -107,4 +102,30 @@ p {
   line-height: 1.33333;
   letter-spacing: 0.04em;
   color: #2e2f42;
+}
+
+.loading-spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

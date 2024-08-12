@@ -1,79 +1,51 @@
 import { fetchImages } from './js/pixabay-api.js';
-import {
-  renderGallery,
-  clearGallery,
-  showNotification,
-  showLoader,
-  hideLoader,
-} from './js/render-functions.js';
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
+import { renderImages } from './js/render-functions.js';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
 const form = document.querySelector('#search-form');
-const galleryElement = document.querySelector('.gallery');
-const loaderElement = document.querySelector('.loader');
-const loadMoreElement = document.querySelector('.load-more');
+const gallery = document.querySelector('.gallery');
+const loadingSpinner = document.querySelector('.loading-spinner');
 
-let query = '';
-let page = 1;
+function clearGallery() {
+  gallery.innerHTML = '';
+}
 
-let lightbox = new SimpleLightbox('.gallery a');
+function showLoader() {
+  loadingSpinner.classList.remove('hidden');
+}
 
-form.addEventListener('submit', async event => {
+function hideLoader() {
+  loadingSpinner.classList.add('hidden');
+}
+
+form.addEventListener('submit', event => {
   event.preventDefault();
-  query = event.currentTarget.elements.searchQuery.value.trim();
 
+  const query = event.target.elements.searchQuery.value.trim();
   if (query === '') {
-    showNotification('Please enter a search query', 'warning');
+    iziToast.warning({
+      title: 'Warning',
+      message: 'Please enter a search query!',
+    });
     return;
   }
 
   clearGallery();
-  page = 1;
-  await fetchAndRenderImages();
+  showLoader();
+
+  fetchImages(query)
+    .then(images => {
+      renderImages(images, gallery);
+    })
+    .catch(error => {
+      console.error('Error handling images:', error);
+      iziToast.error({
+        title: 'Error',
+        message: 'Something went wrong. Please try again later.',
+      });
+    })
+    .finally(() => {
+      hideLoader();
+    });
 });
-
-async function fetchAndRenderImages() {
-  try {
-    showLoader();
-    const data = await fetchImages(query, page);
-
-    if (data.hits.length === 0) {
-      showNotification(
-        'Sorry, there are no images matching your search query. Please, try again!',
-        'error'
-      );
-      return;
-    }
-
-    renderGallery(data.hits, galleryElement);
-    lightbox.refresh();
-
-    if (data.totalHits > 12) {
-      observeLoadMore();
-    }
-  } catch (error) {
-    showNotification(error.message, 'error');
-  } finally {
-    hideLoader();
-  }
-}
-
-function observeLoadMore() {
-  const options = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.5,
-  };
-
-  const observer = new IntersectionObserver(async entries => {
-    if (entries[0].isIntersecting) {
-      page += 1;
-      await fetchAndRenderImages();
-    }
-  }, options);
-
-  observer.observe(loadMoreElement);
-}

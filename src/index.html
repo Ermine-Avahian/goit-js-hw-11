@@ -22,20 +22,13 @@
   </head>
   <body>
     <form id="search-form">
-      <input
-        type="text"
-        name="searchQuery"
-        autocomplete="off"
-        placeholder="Search images..."
-      />
+      <input type="text" name="searchQuery" placeholder="Search images..." />
       <button type="submit">Search</button>
     </form>
 
-    <div class="gallery"></div>
+    <div class="loading-spinner hidden"></div>
 
-    <div class="loader"></div>
-
-    <div class="load-more"></div>
+    <ul class="gallery"></ul>
 
     <script type="module" src="./main.js"></script>
   </body>
